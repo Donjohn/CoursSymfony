@@ -63,7 +63,7 @@ src/
 (ouvrir GFI et montrer l'arborescence et expliquer rapidement)
 
 
-Ou placer ses assets: dans les bundle !  
+Ou placer ses assets dans les bundle !  
 `Resource/public/js|images|css`  
 
 Les assets font parties de vos sources, elle ne doivent pas etre disponibles directement mais servit.
