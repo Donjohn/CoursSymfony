@@ -76,7 +76,7 @@ et je l'include dans mes 2 templates initiaux.
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Hello {% include 'world.html.twig' %}
+    Hello {% include 'default/world.html.twig' %}
 {% endblock %}
 ```
 ```twig
@@ -85,7 +85,7 @@ et je l'include dans mes 2 templates initiaux.
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Bye {% include 'world.html.twig' %}
+    Bye {% include 'default/world.html.twig' %}
 {% endblock %}
 ```
 
@@ -97,7 +97,7 @@ Dans ce cas là on va embbed le template world dans bye
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Bye {% embed 'world.html.twig' %}
+    Bye {% embed 'default/world.html.twig' %}
             {% block world %}{{ parent()}} See you soon !{% endblock %}
         {% endembed %}
 {% endblock %}
@@ -116,7 +116,7 @@ Les templates index et bye deviennent :
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Hello {% include 'world.html.twig' %}
+    Hello {% include 'default/world.html.twig' %}
 {% endblock %}
 ```
 ```twig
@@ -125,7 +125,7 @@ Les templates index et bye deviennent :
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Bye {% include 'world.html.twig' with {textMore: ' See you soon !'} %}
+    Bye {% include 'default/world.html.twig' with {textMore: ' See you soon !'} %}
 {% endblock %}
 ```
 
