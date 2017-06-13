@@ -1,123 +1,142 @@
 ** Composer **
  - creer un projet  
  Télécharger le script https://symfony.com/doc/current/setup.html    
- `php symfony new Folder <version>`
+ `php symfony new Cours20170613 3.2`
+ 
  - on ouvre le fichier composer.json
  ```json
  {
-    "name": "cours/demo",
-    "license": "proprietary",
-    "type": "project",
-    "autoload": {
-        "psr-4": {
-            "": "src/"
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        },
-        "files": [
-            "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
-        ]
-    },
-    "require": {
-        "php": ">=5.5.9",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/orm": "^2.5",
-        "incenteev/composer-parameter-handler": "^2.0",
-        "sensio/distribution-bundle": "^5.0.19",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "symfony/monolog-bundle": "^3.1.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.3.*",
-        "twig/twig": "^1.0||^2.0"
-    },
-    "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
-    },
-    "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-        ],
-        "post-install-cmd": [
-            "@symfony-scripts"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
-        ]
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
-        "symfony-tests-dir": "tests",
-        "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
-        "branch-alias": null
-    }
-} 
+     "name": "donjohn/cours20170613",
+     "license": "proprietary",
+     "type": "project",
+     "autoload": {
+         "psr-4": {
+             "": "src/"
+         },
+         "classmap": [
+             "app/AppKernel.php",
+             "app/AppCache.php"
+         ]
+     },
+     "autoload-dev": {
+         "psr-4": {
+             "Tests\\": "tests/"
+         },
+         "files": [
+             "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
+         ]
+     },
+     "require": {
+         "php": ">=5.5.9",
+         "doctrine/doctrine-bundle": "^1.6",
+         "doctrine/doctrine-cache-bundle": "^1.2",
+         "doctrine/orm": "^2.5",
+         "incenteev/composer-parameter-handler": "^2.0",
+         "sensio/distribution-bundle": "^5.0",
+         "sensio/framework-extra-bundle": "^3.0.2",
+         "symfony/monolog-bundle": "^3.0.2",
+         "symfony/polyfill-apcu": "^1.0",
+         "symfony/swiftmailer-bundle": "^2.3.10",
+         "symfony/symfony": "3.2.*",
+         "twig/twig": "^1.0||^2.0"
+     },
+     "require-dev": {
+         "sensio/generator-bundle": "^3.0",
+         "symfony/phpunit-bridge": "^3.0"
+     },
+     "scripts": {
+         "symfony-scripts": [
+             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+         ],
+         "post-install-cmd": [
+             "@symfony-scripts"
+         ],
+         "post-update-cmd": [
+             "@symfony-scripts"
+         ]
+     },
+     "config": {
+         "sort-packages": true
+     },
+     "extra": {
+         "symfony-app-dir": "app",
+         "symfony-bin-dir": "bin",
+         "symfony-var-dir": "var",
+         "symfony-web-dir": "web",
+         "symfony-tests-dir": "tests",
+         "symfony-assets-install": "relative",
+         "incenteev-parameters": {
+             "file": "app/config/parameters.yml"
+         },
+         "branch-alias": null
+     }
+ } 
  ```
- - il faut savoir lire les numéros de version
-  `"symfony/monolog-bundle": "^3.1.0",` indique que l'on veut le package symfony/monolog-bundle (gestion des logs) AU MOINS en version 3.1.0. S'il existe une version 4, elle sera installé  
-  `"symfony/symfony": "3.3.*",` et plus précis. On demande la version 3.3.* uniquement. Si une version 3.4 de Symfony sort, vous etes assuré de ne pas upgrader le core de Symfony.
+ - il faut savoir lire les numéros de version  
+    `"symfony/swiftmailer-bundle": "^2.3.10",` indique que l'on veut le package symfony/swiftmailer-bundle (gestion des logs) AU MOINS en version 2.3.10. S'il existe une version 3, elle sera installée.  
+    Pour savoir ce qui a réelement été installé, on regarde la sortie écran lors de l'execution de composer ou bien on ouvre le fichier composer.lock et on cherche le package en question.
+    
+    `"symfony/symfony": "3.2.*",` et plus précis. On demande la version 3.2.* uniquement. Si une version 3.3 ou 3.4 de Symfony sort, vous etes assuré de ne pas upgrader le core de Symfony par erreur.
+      
+      `"twig/twig": "^1.0||^2.0"` permet de selectionner un ou l'autre version, incompatibles entre elles, en fonction de votre environnement.
   
- - gestion de la version de php, permet d'affiner la selection des packages. Car c'est aussi un des objectifs de composer : télécharger les packages compatibles entre eux
- ```
+  
+  
+ - gestion de la version de php  
+    Par default, il utilise la version php de votre machine au moment ou vous lancez la commande mais parfois il est nescessaire de travailler sur d'autre versions de php. On peut aussi demander à travailler sur des librairies en developpement par ex.
+    On modifie donc les reglages dans le fichier composer.json. Cela permet d'affiner la selection des packages. Car c'est un des objectifs de composer : télécharger les packages compatibles entre eux
+ ```json
+ {
     "config": {
         "platform": {
             "php": "5.6.25"
         }
     }
+}
 ```
- - install / update / require
-    - install  
-     Cette commande permet d'installer les librairies telles qu'elle ont été declarés dans le fichier composer.lock (on y revient)
-    - update  
-    Elle premet de demander à composer s'il existe des nouvelles versions des librairies tout en respectant les version marquées dans le fichier composer.json
-    - require  
-    Permet d'ajouter une librairies à composer.json ou de spécifier une version
-    - remove
-    Permet de supprimer une librairie. (Ne prends aps de numero de version)
- ex :On ne veut pas de Symfony en 3.3 on veut revenir en Symfony 3.2
- `composer require symfony/symfony 3.2.*`
-   
- On ouvre à nouveau le fichier composer.json et la ligne a changé 
-    `"symfony/symfony": "3.2.*"`
- 
- Par contre si je mets "^3.2.*" il me téléchargera la derniere version (3.3.2)
 
- - flux de developpement dans une equipe  
-     - Probleme
-         - si tout le monde install les packages dans son coin. 
-         - le fichier composer.json comporte des indications de version minimum le plus souvent. Il n'est pas tjs judicieux de mettre à jour les librairies sans le vouloir.
+     
+ - install / update / require
+    - update  
+        Elle premet de demander à composer s'il existe des nouvelles versions des librairies tout en respectant les version marquées dans le fichier composer.json. Apres une creation de projet il est sain de lancer cette commande au moins une fois.  
+        `composer update`  
+        Cela met à jour le fichier composer.lock qui sert de reference pour installer les packages voulus.
+    - install  
+     Cette commande permet d'installer les librairies telles qu'elle ont été declarés dans le fichier composer.lock (on y revient)    
+    - require  
+    Permet d'ajouter une librairie à composer.json ou de spécifier une version
+    - remove
+    Permet de supprimer une librairie. (Ne prends pas de numero de version)
+    
+    ex :On ne veut pas de Twig en 2 on veut revenir en Twig en version 1  
+ `composer require twig/twig ^1.0`
+   
+    On ouvre à nouveau le fichier composer.json et la ligne a changé 
+    `"twig/twig": "^1.0"`
+
+ - flux de developpement dans une equipe, les problèmes...
+     - si tout le monde install les packages dans son coin. 
+     - le fichier composer.json comporte des indications de version minimum le plus souvent. Il n'est pas tjs judicieux de mettre à jour les librairies sans le vouloir.
          
  Pour resoudre ces soucis, il y a le fichier composer.lock
- Il contient les informations de toutes les librairies installées via composer. Ce fichier fige les versions installées au dernier update.   
-    - le lead met à jour les librairies (composer update|require <package_name>)  
-    - il commit le fichier composer.lock  
+ Il contient les informations de toutes les librairies installées via composer. Ce fichier fige les versions installées au dernier update.     
+ - le lead met à jour les librairies (composer update|require <package_name>)  
+ - il commit le fichier composer.lock  
     `git commit -m "update composer.lock" composer.lock`    
-    - les autres devs pull ce fichier depuis le repo et lance simplement composer install et uniquement install. Si vous faites un update, prévénez les autres ou faites un git revert ;)
+ - les autres devs pull ce fichier depuis le repo et lance simplement composer install et uniquement install. Si vous faites un update, prévénez les autres ou faites un git revert ;)  
     `git pull`  
     `composer install`  
-    - souvent au pull d'un projet, il est usuel de faire un composer install, surtout si il y a composer.lock de modifié dans les sources recupérées
+    ```
+    Installing dependencies (including require-dev) from lock file
+    ```  
+    Vous pouvez supprimer le repertoire vendor, tapez la commande et il installera exactement les versions du composer.lock et pas celles du composer.json qui sont "vagues".  
+    
+ - Au pull d'un projet, il est usuel de faire un composer install, surtout si il y a composer.lock de modifié dans les sources recupérées
     
  - il est souvent (voir toujours) néscessaire pour un developpement de charger une librairie supplémentaire    
  `composer require guzzlehttp/guzzle`  
