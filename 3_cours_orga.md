@@ -8,7 +8,7 @@ Comment organiser son code !
     C'est l'organisation logique au premier abord. Sauf que ca viole un règle Symfony : Un bundle doit se suffir à lui même.  
     Dans le case de l'organisation BackBundle et FrontBundle, se pose la question de savoir ou mettre les entités, ou mettre les services, etc.. On se retrouve vite avec un des 2 bundle qui a quasiement tout le code métier et un auter bundle quasi vide. Ou 2 bundles foutoirs et où la seule difference vient des controllers/views...
 - Par fonctionnalité  
-    C'est peut etre la plus complexes mais c'est la plus pratique sur le long terme. Un bundle = une fonctionnalité/partie du site.
+    C'est peut etre la plus complexe mais c'est la plus pratique sur le long terme. Un bundle = une fonctionnalité/partie du site.
     
     Ex : Site Jeux Video  
     - JeuVideo
@@ -37,4 +37,15 @@ Symfony possède un mecanisme qui va mettre en ligne les assets dans web. C'est 
 `php bin/console assets:install web --symlink`
 
 
-cssrewite ?
+Si je place mes fichiers dans AppBundle/Resources/public/css et mes images dans AppBundle/Resources/public/css, si je ne veux pas que mon ide m'indique une erreure je dois ecrire dans mes css :  
+```css
+.background {
+    background: url('../images/background.jpg');
+}
+```
+ 
+Par contre, si je demande '../images/background.jpg' depuis le le front controller, il ne trouvera pas l'image.  
+Car apres mise à disposition des assets dans le repertoire web leurs urls ne sont plus 
+`../images/background.jpg` mais `bundles/app/images/background.jpg`  
+Elles ne sont plus servies du meme endroit, et donc elles n'ont plus la meme url
+C'est le job d'AsseticBundle grace au filtre cssrewite, qui va corriger le chemin des assets lorsqu'il va traiter les css lors des appels coté front controller.
