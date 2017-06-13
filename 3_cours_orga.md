@@ -22,6 +22,43 @@ Comment organiser son code !
     Dans le cas 2, j'en ai autant besoin dans l'un et l'autre bundle..
     La bonne solution est de faire un bundle qui possède l'admin et le front, donc les controllers, formulaires ainsi que tous les assets qui servent à afficher les JeuVideo
     
+    Attention : le nom du repertoire doit être en accord avec le namespace de la classe.
+```
+src/
+    JeuVideoBundle/
+        /Controller
+            JeuVideoAdminController.php
+            JeuVideoController.php
+        /Entity
+            JeuVideo.php
+        /Repository
+            JeuVideoRepository.php
+        /Resources
+            /public
+                /css
+                    admin.css
+                    front.css
+                /images
+                    background.jpg
+                /js
+                    effects.js
+            /views
+                /JeuVideoAdmin
+                    index.html.twig
+                    edit.html.twig
+                    list.html.twig
+                    delete.html.twig
+                /JeuVideo
+                    index.html.twig
+                    list.html.twig
+                    search.html.twig
+        JeuVideoBundle.php
+    UserBundle/
+    ForumBundle/
+    ShopBundle/
+    NewsBundle/
+    DocuBundle/
+```
     
 (ouvrir GFI et montrer l'arborescence et expliquer rapidement)
 
