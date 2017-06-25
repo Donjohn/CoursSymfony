@@ -1,1 +1,0 @@
-tuyau avec fenetre de controle/changement.
