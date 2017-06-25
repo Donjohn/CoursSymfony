@@ -1,6 +1,7 @@
 - librairies != bundle  
 
- Une bundle est une librairie php dédié à Symfony2. Guzzle est une librairie php qu'on peut utiliser dans n'importe quel projet php comme du Laravel  
+ Une bundle est une librairie php dédiée à Symfony2/3.  
+ Guzzle est une librairie php qu'on peut utiliser dans n'importe quel projet php comme du Laravel  
  symfony/assetic-bundle est quant à elle spécifique à Symfony. Elle s'installe pourtant de la même manière.
  ```
 composer require symfony/assetic-bundle
@@ -19,8 +20,7 @@ composer require symfony/assetic-bundle
  C'est un procédé très frequent.
  
  Notre bundle n'est tjs pas utilisable dans Symfony. Il va falloir l'ajouter au moteur, le kernel.
- Ouvrez le fichier app/AppKernel.php et ajoutez la ligne  
- `new Symfony\Bundle\AsseticBundle\AsseticBundle(),` à la liste des bundles utilisés.
+ Ouvrez le fichier app/AppKernel.php et ajoutez la ligne  `new Symfony\Bundle\AsseticBundle\AsseticBundle(),` à la liste des bundles utilisés.
   Certain bundle ont besoin de configuration pour etre opérationnel. C'est le cas d'assetic, ouvrez le fichier app/config/config.yml et ajoutez
   ```yaml
 assetic:
@@ -127,7 +127,7 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
 ````
 Identification != Authentification. Pourtant ca se gère au meme endroit car les 2 definissent un firewall.
-main est notre firewall. On indique à SF d'activer ce firewall toutes les urls qui respectent la pattern ^/
+Dance cet exemple, 'main' est notre firewall. On indique à SF d'activer ce firewall sur toutes les urls qui respectent la pattern ^/
 
 Identification :
 ```yaml
@@ -161,7 +161,7 @@ Authentification :
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
 ```
-Des lors qu'il ya un firewall, il faut un User afin de comparer ses droits avec la route en cours.
+Des lors qu'il ya un firewall, il faut un User afin de connaitres ses droits.
 Vous pouvez accepter les Anonymous User comme dans l'exemple, son role est automatique et fournit par Symfony.
 Une personne non loggué peut donc acceder à l'url /login située derriere le firewall main car on a accepté les anonymous et que la page /login demande un des roles les plus bas de la hierarchie : IS_AUTHENTICATED_ANONYMOUSLY
 

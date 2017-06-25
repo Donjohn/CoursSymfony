@@ -7,11 +7,15 @@ Généralement vous utilisez Twig dans le rendu de vos controllers. Mais il s'ut
 - Blocks  
 Dans twig on fonctionne à base de block.
 
-- Extends/Include/Embbed  
-AppBundle/Controller/DefaultController  
-indexAction
+- Nommage  
+```
+AppBundle/Controller/DefaultController::indexAction  
+AppBundle/Resources/view/Default/index.twig.html
+```
 le nom de l'action doit appeller une vue du même nom. Sinon vous allez vite vous perdre.
 
+- Extends / Include / Embbed  
+Je créé une action simple qui affiche Hello World !
 ```twig
 {# Resource/views/default/index.html.twig #}
 
@@ -38,9 +42,18 @@ le nom de l'action doit appeller une vue du même nom. Sinon vous allez vite vou
     </body>
 </html>
 ```
+```php
+    /**
+     * @Route("/", name="home")
+     */
+    public function indexAction(Request $request)
+    {
+        return $this->render('default/index.html.twig');
+    }
+```
 
 
-Je cree une nouvelle action
+Je cree une nouvelle action byeAction
 ```php
     /**
      * @Route("/bye", name="bye")
@@ -89,7 +102,7 @@ et je l'include dans mes 2 templates initiaux.
 {% endblock %}
 ```
 
-Une modification du client arrive et il veut desormais "Hello World !" et "By World ! See you soon !"
+Une modification du client arrive et il veut desormais "Hello World !" et "Bye World ! See you soon !"
 Dans ce cas là on va embbed le template world dans bye
 ```twig
 {# Resource/views/default/bye.html.twig #}

@@ -1,6 +1,6 @@
 ** Composer **
- - creer un projet  
- Télécharger le script https://symfony.com/doc/current/setup.html    
+ - créer un projet  
+ Télécharger le script [https://symfony.com/doc/current/setup.html]    
  `php symfony new Cours20170613 3.2`
  
  - on ouvre le fichier composer.json
@@ -87,8 +87,8 @@
   
   
   
- - gestion de la version de php  
-    Par default, il utilise la version php de votre machine au moment ou vous lancez la commande mais parfois il est nescessaire de travailler sur d'autre versions de php. On peut aussi demander à travailler sur des librairies en developpement par ex.
+ - Réglages des paramètres  
+    Par default, il utilise la version php de votre machine au moment où vous lancez la commande mais parfois il est nescessaire de travailler sur d'autre versions de php. On peut aussi demander à travailler sur des librairies en developpement par ex.
     On modifie donc les reglages dans le fichier composer.json. Cela permet d'affiner la selection des packages. Car c'est un des objectifs de composer : télécharger les packages compatibles entre eux
  ```json
  {
@@ -101,11 +101,12 @@
 ```
 
      
- - install / update / require
-    - update  
-        Elle premet de demander à composer s'il existe des nouvelles versions des librairies tout en respectant les version marquées dans le fichier composer.json. Apres une creation de projet il est sain de lancer cette commande au moins une fois.  
+ - composer install / update / require  
+ Ce sont les 3 commandes importantes de composer, elle servent à gerer les packages
+    - update <packageName|optionnal>  
+        Elle permet de demander à composer s'il existe des nouvelles versions des librairies tout en respectant les version marquées dans le fichier composer.json. Apres une creation de projet il est sain de lancer cette commande au moins une fois.  
         `composer update`  
-        Cela met à jour le fichier composer.lock qui sert de reference pour installer les packages voulus.
+        Cette commande met à jour le fichier composer.lock qui sert de reference pour installer les packages voulus.
     - install  
      Cette commande permet d'installer les librairies telles qu'elle ont été declarés dans le fichier composer.lock (on y revient)    
     - require  
@@ -118,30 +119,32 @@
    
     On ouvre à nouveau le fichier composer.json et la ligne a changé 
     `"twig/twig": "^1.0"`
+    
+     Il est souvent (voir toujours) néscessaire pour un developpement de charger une librairie supplémentaire    
+     `composer require guzzlehttp/guzzle`  
+      Cela ajoute la librairie au fichier composer.json, verifie les dependances et procède à l'installation si tout va bien. Ici, On n'a pas précisé de version. On laisse composer trouver la derniere version compatible avec mon composer.json.
+      (Guzzle est une librairie php qui offre des clients de connection)
 
  - flux de developpement dans une equipe, les problèmes...
      - si tout le monde install les packages dans son coin. 
      - le fichier composer.json comporte des indications de version minimum le plus souvent. Il n'est pas tjs judicieux de mettre à jour les librairies sans le vouloir.
          
- Pour resoudre ces soucis, il y a le fichier composer.lock
- Il contient les informations de toutes les librairies installées via composer. Ce fichier fige les versions installées au dernier update.     
- - le lead met à jour les librairies (composer update|require <package_name>)  
- - il commit le fichier composer.lock  
+    Pour resoudre ces soucis, il y a le fichier composer.lock
+    Il contient les informations de toutes les librairies installées via composer. Ce fichier fige les versions installées au dernier update.     
+    - le lead met à jour les librairies (composer update|require <package_name>)  
+    - il commit le fichier composer.lock  
     `git commit -m "update composer.lock" composer.lock`    
- - les autres devs pull ce fichier depuis le repo et lance simplement composer install et uniquement install. Si vous faites un update, prévénez les autres ou faites un git revert ;)  
+    - les autres devs pull ce fichier depuis le repo et lance simplement composer install et uniquement install. Si vous faites un update, prévénez les autres ou faites un git revert ;)  
     `git pull`  
     `composer install`  
-    ```
-    Installing dependencies (including require-dev) from lock file
-    ```  
+        ```
+        Installing dependencies (including require-dev) from lock file
+        ```  
     Vous pouvez supprimer le repertoire vendor, tapez la commande et il installera exactement les versions du composer.lock et pas celles du composer.json qui sont "vagues".  
     
- - Au pull d'un projet, il est usuel de faire un composer install, surtout si il y a composer.lock de modifié dans les sources recupérées
+    Au pull d'un projet, il est usuel de faire un composer install, surtout si il y a composer.lock de modifié dans les sources recupérées
     
- - il est souvent (voir toujours) néscessaire pour un developpement de charger une librairie supplémentaire    
- `composer require guzzlehttp/guzzle`  
-  Cela ajoute la librairie au fichier composer.json, verifie les dependances et procède à l'installation si tout va bien. Ici, On n'a pas précisé de version. On laisse composer trouver la derniere version compatible avec mon composer.json.
-  (Guzzle est une librairie php qui offre des clients de connection)
+   
   
  Conclusion : 
  - jamais d'update globale sans savoir ce que vous faites.

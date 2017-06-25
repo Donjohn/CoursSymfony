@@ -1,12 +1,12 @@
 Comment organiser son code !
   
-/src
 
+Il existe plusieurs manieres : 
 - AppBundle  
-    c'est le bundle créé par default à l'initialisation du projet. Suffit dans le case de tres petites projets
+    c'est le bundle créé par default à l'initialisation du projet. Suffit dans le cas de tres petits projets. Il disparaitra avec la version 4 de Symfony.
 - Back/Front  
-    C'est l'organisation logique au premier abord. Sauf que ca viole un règle Symfony : Un bundle doit se suffir à lui même.  
-    Dans le case de l'organisation BackBundle et FrontBundle, se pose la question de savoir ou mettre les entités, ou mettre les services, etc.. On se retrouve vite avec un des 2 bundle qui a quasiement tout le code métier et un auter bundle quasi vide. Ou 2 bundles foutoirs et où la seule difference vient des controllers/views...
+    C'est l'organisation logique au premier abord. Sauf que ca viole une règle Symfony : Un bundle doit se suffire à lui même.  
+    Dans le cas de l'organisation BackBundle et FrontBundle, se pose la question de savoir ou mettre les entités, ou mettre les services, etc.. On se retrouve vite avec un des 2 bundle qui a quasiement tout le code métier et un auter bundle quasi vide. Ou 2 bundles foutoirs et où la seule difference vient des controllers/views...
 - Par fonctionnalité  
     C'est peut etre la plus complexe mais c'est la plus pratique sur le long terme. Un bundle = une fonctionnalité/partie du site.
     
@@ -60,7 +60,6 @@ src/
     DocuBundle/
 ```
     
-(ouvrir GFI et montrer l'arborescence et expliquer rapidement)
 
 
 Ou placer ses assets dans les bundle !  
