@@ -204,53 +204,37 @@ Miracle, ca marche !
 
 Bcp de changement pour finalement assigner des VideoGame depuis la category. Mais il faut comprendre que sans ce mecanisme. Doctrine pourrait partir en boucle infinie : Si les 2 cotés donnent l'ordre mettre à j'our l'objet lié.
 
-### ManyToMany (aparté)
+### ManyToMany
 On va creer une entity Tag et on va creer une relation ManyToMany entre Tag et VideoGame 
  
- ```php
-// src/AppBundle/Entity/Category.php
+ ```bash
+php bin/console doctrine:generate:entity  
+AppBundle:Tag 
+annotation
+name
+# quand vous est demandé les parametres de name mettez unique à true
+```
+```php
+//src/AppBundle/Entity/VideoGame.php
 
     /**
-     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag")
+     */
+    protected $tags;
+}
+
+//src/AppBundle/Entity/Tag.php
+
+    //**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\VideoGame")
      */
-    private $videogames;    
+    protected $videogames;
     
-    /**
-     * Add videogame
-     *
-     * @param \AppBundle\Entity\VideoGame $videogame
-     *
-     * @return Category
-     */
-    public function addVideogame(\AppBundle\Entity\VideoGame $videogame)
-    {
-        $this->videogames[] = $videogame;
-
-        return $this;
-    }
-
-    /**
-     * Remove videogame
-     *
-     * @param \AppBundle\Entity\VideoGame $videogame
-     */
-    public function removeVideogame(\AppBundle\Entity\VideoGame $videogame)
-    {
-        $this->videogames->removeElement($videogame);
+    public function __toString(){
+        return $this->name;
     }
     
-}
-// src/AppBundle/Entity/VideoGame.php
-
-    /**
-     * @var Category $category
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category")
-     */
-    private $categories;   
-}
-
-// src/AppBundle/Form/Type/VideoGameType.php
+//src/AppBundle/Form/Type/VideoGameType.php
 
     /**
      * {@inheritdoc}
@@ -258,69 +242,30 @@ On va creer une entity Tag et on va creer une relation ManyToMany entre Tag et V
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name')
-            ->add('categories');
+            ->add('category')
+            ->add('tags');
     }
 }
 ```
 ```bash
-php bin/console doctrine:generate:entities AppBundle
+php bin/console doctrine:generate:entities
 php bin/console doctrine:schema:update --force
+php bin/console generate:doctrine:crud
+AppBundle:Tag
+write action : yes
 ```
-
-On teste  
+On cree un tag et on lui assigne un ou plusieurs jeu directement  
 Pk ca marche ??  
 Car la relation ManyToMany est en fait une relation ManyToOne OneToMany et ManyToOne OneToMany automatique avec la table de liaison.    
-Dans le cas d'un ManyToMany, doctrine construit une table intermediare, invisible dans le code. Ccette table est le owningSide. Vos entités VideoGame et Category sont les 2 inversedSide de la relation. Doctrine sait donc mettre à jour tout seul la relation entre les 2 objets.  
+Dans le cas d'un ManyToMany, doctrine construit une table intermediare, invisible dans le code. Ccette table est le owningSide. Vos entités VideoGame et Category sont les 2 inversedSide de la relation. Doctrine sait donc mettre à jour tout seul la relation entre les 2 objets.
+et pk dans un sens et pas dans l'autre ??
+
+Forcons les inversedBy et mappedBy. Dans un sens, la mise à jour marche masi pas dans l'autre. Si on inverse, le resultat s'inverse aussi.
+Si on veut un bi directionnel, il faut reproduire le comportement vu plus tot en respectant le sesn de mise à jour.   
 
 
 
-
-### Cascade Persist et Embedded Form
-Retirons le champ videogames de CategoryType
-```php
-// src/AppBundle/Form/Type/CategoryType.php
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('name');
-    }
-}
-// src/AppBundle/Form/Type/VideoGameType.php
-
-use 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('name')
-            ->add('category', CategoryType::class);
-    }
-}
-```
-Et dans VideoGameType, ajoutons le formulaire de category directement.  
-Editons un des VideoGame  
-Rentrons une nouvelle categorie et on teste.  
-
-Erreur : PK ?  
-
-Doctrine ne sait pas quoi faire de cet objet. on lui a donné aucune indication. On a seulement persist l'object VideoGame. On doit donc lui dire quoi en faire.
-```php
-// src/AppBundle/Entity/VideoGame.php
-
-    /**
-     * @var Category $category
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="videogames", cascade={"persist"})
-     */
-    private $category;   
-}
-```
-On teste, ca marche, le VideoGame est relié à un nouvelle categorie
-
+### Cascade
 On a fait une erreur et on doit supprimer la categorie. On edit la Category et on delete.
 
 Erreur : PK ?
@@ -379,11 +324,57 @@ On corrige
 ```bash
 php bin/console doctrine:schema:update --force
 ```
-Sil pose des erreurs c'est surement que vous avez deja 2 categories avec le meme nom. Supprimez les et relancez la commande.
+S'il pose des erreurs c'est surement que vous avez deja 2 categories avec le meme nom. Supprimez les et relancez la commande.
+
+Exo
+Relions 2 VideoGame à une meme categorie. Supprimons un jeu.
+rouver comment supprimer un jeu relié à 2 categorie sans supprimer la categorie mais si on supprimer le dernier jeu relié à cette categorie, cela supprime cette categorie.
 
 
-(next orphanremoval)
+### Cascade Persist et Embedded Form
+Retirons le champ videogames de CategoryType
+```php
+// src/AppBundle/Form/Type/CategoryType.php
 
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name');
+    }
+}
+// src/AppBundle/Form/Type/VideoGameType.php
 
-et theming
+use 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name')
+            ->add('category', CategoryType::class);
+    }
+}
+```
+Et dans VideoGameType, ajoutons le formulaire de category directement.  
+Editons un des VideoGame  
+Rentrons une nouvelle categorie et on teste.  
+
+Erreur : PK ?  
+
+Doctrine ne sait pas quoi faire de cet objet. on lui a donné aucune indication. On a seulement persist l'object VideoGame. On doit donc lui dire quoi en faire.
+```php
+// src/AppBundle/Entity/VideoGame.php
+
+    /**
+     * @var Category $category
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="videogames", cascade={"persist"})
+     */
+    private $category;   
+}
+```
+On teste, ca marche, le VideoGame est relié à un nouvelle categorie
+
 
