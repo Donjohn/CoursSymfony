@@ -2,7 +2,7 @@
 
  Une bundle est une librairie php dédiée à Symfony2/3.  
  Guzzle est une librairie php qu'on peut utiliser dans n'importe quel projet php comme du Laravel  
- symfony/assetic-bundle est quant à elle spécifique à Symfony. Elle s'installe pourtant de la même manière.
+ symfony/assetic-bundle est quant à elle spécifique à Symfony, elle sont généralement nommés -bundle. Elle s'installe pourtant de la même manière.
  ```
 composer require symfony/assetic-bundle
     Using version ^2.8 for symfony/assetic-bundle
@@ -21,7 +21,7 @@ composer require symfony/assetic-bundle
  
  Notre bundle n'est tjs pas utilisable dans Symfony. Il va falloir l'ajouter au moteur, le kernel.
  Ouvrez le fichier app/AppKernel.php et ajoutez la ligne  `new Symfony\Bundle\AsseticBundle\AsseticBundle(),` à la liste des bundles utilisés.
-  Certain bundle ont besoin de configuration pour etre opérationnel. C'est le cas d'assetic, ouvrez le fichier app/config/config.yml et ajoutez
+  Certains bundles ont besoin de configuration pour etre opérationnel. C'est le cas d'assetic, ouvrez le fichier app/config/config.yml et ajoutez
   ```yaml
 assetic:
     debug:          '%kernel.debug%'
@@ -29,14 +29,8 @@ assetic:
     filters:
         cssrewrite: ~
 ```
-Assetic est un gestionnaire de css et js. Tout comme gulp/grunt et d'autres. Depuis la 2.8 il a été retiré car il n'est pas indispensable. Néanmoins, historiquement il continue d'être très utilisé notamment pour changer les chemins des fichiers dans vos css lors de la mise en ligne de votre application. 
+Assetic est un gestionnaire de css et js. Tout comme gulp/webpack et d'autres. Depuis la 2.8 il a été retiré car il n'est pas indispensable. Néanmoins, historiquement il continue d'être très utilisé notamment pour changer les chemins des fichiers dans vos css lors de la mise en ligne de votre application. 
 
-**_Exo : installer doctrine/migrations-bundle_**
-`php bin/console doctrine:database:create`
-`php bin/console doctrine:migration:generate`
-
-Je teste mon projet rapidement en cleanant le cache
-`php bin/console ca:cl`
 
 Les bundles importants: 
 - https://symfony.com/doc/bundles/
@@ -188,3 +182,9 @@ fos_user_change_password:
     prefix: /profile
 ```
 Il fournit meme une page de profil de l'utilisateur !!
+
+
+### Surcharge
+1) heritage de bundle
+2) juste les assets
+3) dans la config

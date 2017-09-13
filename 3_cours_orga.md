@@ -58,5 +58,13 @@ src/
     ShopBundle/
     NewsBundle/
     DocuBundle/
+    CoreBundle/
+        /Manager/
+            BaseManager.php
+        /Listener
+            MailListener.php
+        /Resources            
+            /views
+                layout.html.twig
 ```
  

@@ -1,6 +1,4 @@
-Les embbeded Forms
-
-
+### OneToMany et ManyToOne
 on va creer un entité Catégorie.
 
 ```bash
@@ -28,19 +26,11 @@ On edite la class AppBundle\Entity\VideoGame et on ajoute la relation avec Categ
 
     /**
      * @var Category $category
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="videogames", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
      */
     private $category;
 ```
-```php
-//AppBundle\Entity/Category
 
-    /**
-     * @var VideoGame $videogames
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VideoGame", mappedBy="category")
-     */
-    private $videogames;
-```
 
 Il manque les getter et setters, on demande à doctrine de les faire pour nous. Je prefere car il rajoute les bons commentaires et surtout un return $this; sur les getters
 ```bash
@@ -51,9 +41,6 @@ On applique les changements dans la base de donnée
 ```bash
 php bin/console doctrine:schema:update --force
 ```
-
-
-ICI : laius sur inversedBy, mappedBy
  
 
 
@@ -76,259 +63,327 @@ on verifie que tout marche
 ```bash
 php bin/console server:run
 ```
-Et on navigue à [http://127.0.0.1:8001/videogame/]
+Et on navigue à [http://127.0.0.1:8001/videogame/]  
+On créé un VideoGame
 
-// src/AppBundle/Form/Type/CategoryType.php
-namespace AppBundle\Form\Type;
+On navigue à [http://127.0.0.1:8001/category/]  
+On créé une catégorie
 
-use AppBundle\Entity\Category;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+On revient sur  à [http://127.0.0.1:8001/videogame/]  
+et edit le jeu créé.
 
-class CategoryType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('name');
-    }
+Erreur : pk ?
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => Category::class,
-        ));
-    }
-}
-```
-On migre la database
-`php bin/console doc:mig:diff`    
-`php bin/console doc:mig:mig`  
+On corrige en ajoutant la fonction __toString à chaque entité.
 ```php
-// src/AppBundle/Form/Type/CategoryType.php
-namespace AppBundle\Form\Type;
+//AppBundle\Entity/Category
 
-use AppBundle\Entity\Category;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-class TaskType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('name');
-        $builder->add('category', CategoryType::class);
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => Category::class,
-        ));
-    }
-}
-```
-**_EXO : Pourquoi on ne met pas `$builder->add('tasks')` dans le CategoryType ?_**
-
-On cree ensuite le controller des Tasks
-```php
-//AppBundle\Controller\TaskController;
-namespace AppBundle\Controller;
-
-
-use AppBundle\Entity\VideoGame;
-use AppBundle\Form\Type\TaskType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-
-class TaskController extends Controller
-{
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route(path="/task_new", name="task_create")
-     */
-    public function createAction(Request $request)
-    {
-        $task = new VideoGame();
-        $form = $this->createForm(TaskType::class, $task);
-        $form->add('valider', SubmitType::class);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->get('doctrine.orm.default_entity_manager')->persist($task);
-            $this->get('doctrine.orm.default_entity_manager')->flush();
-
-            return $this->redirectToRoute('task_edit', ['VideoGame' => $task->getId()]);
-
-        }
-
-        return $this->render('@App/VideoGame/create.html.twig', ['form' => $form->createView()]);
-
-    }
-
-    /**
-     * @param Request $request
-     * @param VideoGame $task
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route(path="/task_edit/{VideoGame}", name="task_edit")
-     */
-    public function editAction(Request $request, VideoGame $task)
-    {
-        $form = $this->createForm(TaskType::class, $task);
-        $form->add('valider', SubmitType::class);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->get('doctrine.orm.default_entity_manager')->persist($task);
-            $this->get('doctrine.orm.default_entity_manager')->flush();
-
-        }
-
-        return $this->render('@App/VideoGame/edit.html.twig', ['form' => $form->createView()]);
-
-    }
-}
-```
-Et on créé 2 templates
-```twig
-{# AppBundle\Resources\views\VideoGame\create.html.twig#}
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    {{ form(form) }}
-{% endblock %}
-```
-```twig
-{# AppBundle\Resources\views\VideoGame\edit.html.twig#}
-{% extends '@App/VideoGame/create.html.twig' %}
-```
-On va sur /task_new, on renseigne un tache et un catégorie et on valide.
-Un tour dans la base donnée nous confirme que la VideoGame et la Category ont été sauvé.
-Par contre, on a jamais sauvé Category explicitement... pk elle est dans la base de donnée. pk... ??
-
-Car on a rajouté `, cascade={"persist"}` Si une VideoGame est sauvée, toute Category associé est aussi sauvée.
-
-PK pas dans l'autre sens ?
-- si on avait les 2 sens, on aurait une boucle infinie.
-- on a un champ category_id dans VideoGame. On doit donc modifier la table VideoGame pour mettre un jour la relation qu'on modifie VideoGame ou Category. C'est donc VideoGame qui "possede" une Category. C'est lui le boss, le master. C'est donc lui qui donne le sens pour sauver les relations entre les entités.
-
-Si on fait un form des Category avec les tasks et on decide de sauver cette category. Aucune VideoGame ne sera assigné à cette catégorie sans intervention de notre part.
-
-```php
-//AppBundle\Controller\TaskController;
-namespace AppBundle\Controller;
-
-
-use AppBundle\Entity\Category;
-use AppBundle\Entity\VideoGame;
-use AppBundle\Form\Type\CategoryType;
-use AppBundle\Form\Type\TaskType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-
-class CategoryController extends Controller
-{
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route(path="/category_new", name="category_create")
-     */
-    public function createAction(Request $request)
-    {
-        $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->add('tasks');
-        $form->add('valider', SubmitType::class);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->get('doctrine.orm.default_entity_manager')->persist($category);
-            $this->get('doctrine.orm.default_entity_manager')->flush();
-
-            return $this->redirectToRoute('category_edit', ['category' => $category->getId()]);
-
-        }
-
-        return $this->render('@App/Category/create.html.twig', ['form' => $form->createView()]);
-
-    }
-
-    /**
-     * @param Request $request
-     * @param VideoGame $task
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route(path="/category_edit/{category}", name="category_edit")
-     */
-    public function editAction(Request $request, Category $category)
-    {
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->add('tasks');
-        $form->add('valider', SubmitType::class);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $this->get('doctrine.orm.default_entity_manager')->persist($category);
-            $this->get('doctrine.orm.default_entity_manager')->flush();
-
-        }
-
-        return $this->render('@App/Category/edit.html.twig', ['form' => $form->createView()]);
-
-    }
-}
-```
-Si on va sur /category_name on se tape une erreur
-`Catchable Fatal Error: Object of class AppBundle\Entity\VideoGame could not be converted to string`
-
-Il essaie d'afficher les tasks possibles, et pour cela il a besoin d'un label pour chaque VideoGame, or on a oublié de dire à l'entité quel est son label pour l'instance en cours
-```php
-//AppBundle\Entity\VideoGame
-    ...
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return $this->name;
     }
-    ...
 ```
-On revient, et on créé une category et on l'assigne à la tache précedemment sauvé. On valide et on regarde en base de donnée : la VideoGame est toujours relié à la premiere catégory créée  
-=> explanation...
 
-Pour que le slave donne l'ordre au master de sauver la relation il faut modifier l'entité Category
 ```php
-    /**
-     * @var VideoGame $tasks
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VideoGame", mappedBy="category", cascade={"persist"})
-     */
-    private $tasks;
+//AppBundle\Entity/VideoGame
 
-...
-
-    /**
-     * Add VideoGame
-     *
-     * @param \AppBundle\Entity\VideoGame $task
-     *
-     * @return Category
-     */
-    public function addTask(\AppBundle\Entity\VideoGame $task)
+    public function __toString()
     {
-        $this->tasks[] = $task;
-        $task->setCategory($this);
+        return $this->name;
+    }
+```
+
+On recharge ca marche mieux !  
+On assigne la catégorie créée au VideoGame et on sauve.  
+L'information est bien sauvé en base. Le videoGame est lié à la catégorie.  
+On en profite pour créé un 2eme VideoGame sur [http://127.0.0.1:8001/videogame/new] et on n'assigne pas de catégory.
+
+
+On va vouloir ajouter les VideoGame directement dans le formulaire de la category. On edit CategoryType
+```php
+// src/AppBundle/Form/Type/CategoryType.php
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name');
+        $builder->add('videogames');
+    }
+}
+
+// src/AppBundle/Entity/Category.php
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VideoGame")
+     */
+    private $videogames;
+    
+}
+```
+```bash
+php bin/console doctrine:generate:entities AppBundle
+error
+[Doctrine\ORM\Mapping\MappingException]
+OneToMany mapping on field 'videogames' requires the 'mappedBy' attribute.
+```
+Parcequ'on a une relation OneToMany et ManyToOne, on doit definr les mappedBy et inversedBy.  
+Category ne possede pas physiquement d'information sur les VideoGame auxquels elle est rattachée. Le champ sql categorie_id se trouve dans la table de l'entité VideoGame. De ce fait on dit que VideoGame est le Owning Side de la relation. C'est lui qui possède l'information de la relation. En liant Categopy à VideoGame Doctrine a besoin de savoir où est le champ "maitre" de la relation et qui est l'inverse Side. C'est le but de ces paramètres.
+
+```php
+// src/AppBundle/Entity/Category.php
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\VideoGame", mappedBy="category")
+     */
+    private $videogames;    
+}
+// src/AppBundle/Entity/VideoGame.php
+
+    /**
+     * @var Category $category
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="videogames")
+     */
+    private $category;   
+}
+```
+```bash
+php bin/console doctrine:generate:entities AppBundle
+```
+
+On edit la category créé et on assigne le 2eme jeu
+[http://127.0.0.1:8001/category/1/edit]
+
+
+On sauve et la category est resté sur le premier jeu.  
+
+PK ?  
+On sauve une category. Elle n'est pas maitre de la relation. Elle ne la met donc pas à jour. Il faut sauver l'objet videogame pour que l'effet est lieu. C'est le OwningSide/InverSide effect.    
+
+Le maitre de la relation est toujours VideoGame hors, nous avons simplement remplis un ArrayCollection de l'objet Category et sauvé l'objet Category. VideoGame doit être sauvé aussi pour mettre à jour la relation vu que c'est le maitre de la relation. Comment faire ?  
+On corrige et on met à jour l'objet VideoGame lorsque'on change la liste dans l'entité Category
+```php
+//AppBundle\Entity/Category
+    public function addVideogame(\AppBundle\Entity\VideoGame $videogame)
+    {
+        $videogame->setCategory($this);
+        $this->videogames[] = $videogame;
 
         return $this;
     }
+
+    /**
+     * Remove videogame
+     *
+     * @param \AppBundle\Entity\VideoGame $videogame
+     */
+    public function removeVideogame(\AppBundle\Entity\VideoGame $videogame)
+    {
+        $videogame->setCategory(null);
+        $this->videogames->removeElement($videogame);
+    }
 ```
-Le cascade indique qu'il faut traiter les entités VideoGame associés à cette Category. Hors sans le `$task->setCategory($this);` aucune VideoGame n'est mise à jour. 
+
+On teste ! Tjs pas !  
+Pk ?  
+Le formulaire au moment où il lie la requete à l'objet Category utilise les getters et les setters. Hors dans le cas d'une relation OneToMany il n'y a pas de setter. Il faut donc modifier le formulaire pour ajouter une option.  
+ 
+```php
+//AppBundle\Form\CategoryType
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name');
+        $builder->add('videogames', null, ['by_reference' => false]);
+    }
+```
+On reteste  
+Miracle, ca marche !  
+
+Bcp de changement pour finalement assigner des VideoGame depuis la category. Mais il faut comprendre que sans ce mecanisme. Doctrine pourrait partir en boucle infinie : Si les 2 cotés donnent l'ordre mettre à j'our l'objet lié.
+
+### ManyToMany (aparté)
+On va creer une entity Tag et on va creer une relation ManyToMany entre Tag et VideoGame 
+ 
+ ```php
+// src/AppBundle/Entity/Category.php
+
+    /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\VideoGame")
+     */
+    private $videogames;    
+    
+    /**
+     * Add videogame
+     *
+     * @param \AppBundle\Entity\VideoGame $videogame
+     *
+     * @return Category
+     */
+    public function addVideogame(\AppBundle\Entity\VideoGame $videogame)
+    {
+        $this->videogames[] = $videogame;
+
+        return $this;
+    }
+
+    /**
+     * Remove videogame
+     *
+     * @param \AppBundle\Entity\VideoGame $videogame
+     */
+    public function removeVideogame(\AppBundle\Entity\VideoGame $videogame)
+    {
+        $this->videogames->removeElement($videogame);
+    }
+    
+}
+// src/AppBundle/Entity/VideoGame.php
+
+    /**
+     * @var Category $category
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category")
+     */
+    private $categories;   
+}
+
+// src/AppBundle/Form/Type/VideoGameType.php
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name')
+            ->add('categories');
+    }
+}
+```
+```bash
+php bin/console doctrine:generate:entities AppBundle
+php bin/console doctrine:schema:update --force
+```
+
+On teste  
+Pk ca marche ??  
+Car la relation ManyToMany est en fait une relation ManyToOne OneToMany et ManyToOne OneToMany automatique avec la table de liaison.    
+Dans le cas d'un ManyToMany, doctrine construit une table intermediare, invisible dans le code. Ccette table est le owningSide. Vos entités VideoGame et Category sont les 2 inversedSide de la relation. Doctrine sait donc mettre à jour tout seul la relation entre les 2 objets.  
+
+
+
+
+### Cascade Persist et Embedded Form
+Retirons le champ videogames de CategoryType
+```php
+// src/AppBundle/Form/Type/CategoryType.php
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name');
+    }
+}
+// src/AppBundle/Form/Type/VideoGameType.php
+
+use 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name')
+            ->add('category', CategoryType::class);
+    }
+}
+```
+Et dans VideoGameType, ajoutons le formulaire de category directement.  
+Editons un des VideoGame  
+Rentrons une nouvelle categorie et on teste.  
+
+Erreur : PK ?  
+
+Doctrine ne sait pas quoi faire de cet objet. on lui a donné aucune indication. On a seulement persist l'object VideoGame. On doit donc lui dire quoi en faire.
+```php
+// src/AppBundle/Entity/VideoGame.php
+
+    /**
+     * @var Category $category
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="videogames", cascade={"persist"})
+     */
+    private $category;   
+}
+```
+On teste, ca marche, le VideoGame est relié à un nouvelle categorie
+
+On a fait une erreur et on doit supprimer la categorie. On edit la Category et on delete.
+
+Erreur : PK ?
+
+
+On a créé une dependance entre 2 tables. Il existe donc une contrainte d'intégrité. Elle empeche qu'un category_id dans la table VideoGame n'existe plus dans la table Category.  
+Ce qui est le cas si on supprime la category. Les videoGame ont une relation obsolete. Par default c'est protégé. On va dire à doctrine de mettre à jour le champ dans la table VideoGame si on supprime la category et comme on a pas de valeur on la met à null.
+
+```php
+// src/AppBundle/Entity/VideoGame.php
+
+    /**
+     * @var Category $category
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="videogames", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $category;   
+}
+```
+```bash
+php bin/console doctrine:schema:update --force
+```
+
+Si vous n'avez pas de VideoGame relié à un Category, recrez en une.
+Puis on va supprimer ce VideoGame directement. On s'attend à ce que la categorie soit supprimé aussi.
+
+Elle ne l'est pas, pk ?
+
+Il manque l'ordre à doctrine.
+```php
+// src/AppBundle/Entity/VideoGame.php
+
+    /**
+     * @var Category $category
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category", inversedBy="videogames", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $category;
+```
+
+Desormais si on supprime la VideoGame on supprime la categorie.
+
+
+
+Si on cree 2 VideoGame en rentrant 2 fois la même categorie, On créé 2 categories. Normal, on a rien empeché pour ca. On a même pas mis que name pouvait être unique.
+On corrige
+```php
+//AppBundle/Entity/Category
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     */
+    private $name;
+```
+```bash
+php bin/console doctrine:schema:update --force
+```
+Sil pose des erreurs c'est surement que vous avez deja 2 categories avec le meme nom. Supprimez les et relancez la commande.
+
+
+(next orphanremoval)
+
+
+et theming
+

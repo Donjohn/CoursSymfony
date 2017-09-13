@@ -1,87 +1,87 @@
 ** Composer **
  - créer un projet  
  Télécharger le script [https://symfony.com/doc/current/setup.html]    
- `php symfony new Cours20170613 3.2`
+ `php symfony new Cours`
  
  - on ouvre le fichier composer.json
  ```json
  {
-     "name": "donjohn/cours20170613",
-     "license": "proprietary",
-     "type": "project",
-     "autoload": {
-         "psr-4": {
-             "": "src/"
-         },
-         "classmap": [
-             "app/AppKernel.php",
-             "app/AppCache.php"
-         ]
-     },
-     "autoload-dev": {
-         "psr-4": {
-             "Tests\\": "tests/"
-         },
-         "files": [
-             "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
-         ]
-     },
-     "require": {
-         "php": ">=5.5.9",
-         "doctrine/doctrine-bundle": "^1.6",
-         "doctrine/doctrine-cache-bundle": "^1.2",
-         "doctrine/orm": "^2.5",
-         "incenteev/composer-parameter-handler": "^2.0",
-         "sensio/distribution-bundle": "^5.0",
-         "sensio/framework-extra-bundle": "^3.0.2",
-         "symfony/monolog-bundle": "^3.0.2",
-         "symfony/polyfill-apcu": "^1.0",
-         "symfony/swiftmailer-bundle": "^2.3.10",
-         "symfony/symfony": "3.2.*",
-         "twig/twig": "^1.0||^2.0"
-     },
-     "require-dev": {
-         "sensio/generator-bundle": "^3.0",
-         "symfony/phpunit-bridge": "^3.0"
-     },
-     "scripts": {
-         "symfony-scripts": [
-             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-         ],
-         "post-install-cmd": [
-             "@symfony-scripts"
-         ],
-         "post-update-cmd": [
-             "@symfony-scripts"
-         ]
-     },
-     "config": {
-         "sort-packages": true
-     },
-     "extra": {
-         "symfony-app-dir": "app",
-         "symfony-bin-dir": "bin",
-         "symfony-var-dir": "var",
-         "symfony-web-dir": "web",
-         "symfony-tests-dir": "tests",
-         "symfony-assets-install": "relative",
-         "incenteev-parameters": {
-             "file": "app/config/parameters.yml"
-         },
-         "branch-alias": null
-     }
- } 
+    "name": "jgn/demodujour",
+    "license": "proprietary",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AppBundle\\": "src/AppBundle"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "files": [
+            "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
+        ]
+    },
+    "require": {
+        "php": ">=5.5.9",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/orm": "^2.5",
+        "incenteev/composer-parameter-handler": "^2.0",
+        "sensio/distribution-bundle": "^5.0.19",
+        "sensio/framework-extra-bundle": "^3.0.2",
+        "symfony/monolog-bundle": "^3.1.0",
+        "symfony/polyfill-apcu": "^1.0",
+        "symfony/swiftmailer-bundle": "^2.3.10",
+        "symfony/symfony": "3.3.*",
+        "twig/twig": "^1.0||^2.0"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "^3.0",
+        "symfony/phpunit-bridge": "^3.0"
+    },
+    "scripts": {
+        "symfony-scripts": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-install-cmd": [
+            "@symfony-scripts"
+        ],
+        "post-update-cmd": [
+            "@symfony-scripts"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web",
+        "symfony-tests-dir": "tests",
+        "symfony-assets-install": "relative",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        },
+        "branch-alias": null
+    }
+}
+
  ```
  - il faut savoir lire les numéros de version  
     `"symfony/swiftmailer-bundle": "^2.3.10",` indique que l'on veut le package symfony/swiftmailer-bundle (gestion des logs) AU MOINS en version 2.3.10. S'il existe une version 3, elle sera installée.  
     Pour savoir ce qui a réelement été installé, on regarde la sortie écran lors de l'execution de composer ou bien on ouvre le fichier composer.lock et on cherche le package en question.
     
-    `"symfony/symfony": "3.2.*",` et plus précis. On demande la version 3.2.* uniquement. Si une version 3.3 ou 3.4 de Symfony sort, vous etes assuré de ne pas upgrader le core de Symfony par erreur.
+    `"symfony/symfony": "3.3.*",` et plus précis. On demande la version 3.3.* uniquement. Si une version 3.4 ou 4.0 de Symfony sort, vous etes assuré de ne pas upgrader le core de Symfony par erreur.
       
       `"twig/twig": "^1.0||^2.0"` permet de selectionner un ou l'autre version, incompatibles entre elles, en fonction de votre environnement.
   
