@@ -1,5 +1,5 @@
 ### OneToMany et ManyToOne
-on va creer un entité Catégorie.
+on va créer une entité Catégorie.
 
 ```bash
 php bin/console doctrine:generate:entity  
@@ -8,7 +8,7 @@ annotation
 name
 ```
 
-on va creer un entité VideoGame.
+on va créer une entité VideoGame.
 
 ```bash
 php bin/console doctrine:generate:entity  
@@ -18,9 +18,9 @@ name
 # quand vous est demandé les parametres de name mettez unique à true
 ```
 
-On ne peut choisir qu'un seul type de mapping (yml, xml, annotation) par bundle et les annotations ont la pririoté. Si une entité a des annotations de mapping doctrine les autres formes de mapping dans le bundle seront ignorés.
+On ne peut choisir qu'un seul type de mapping (yml, xml, annotation) par bundle et les annotations ont la priorité. Si une entité a des annotations de mapping doctrine les autres formes de mapping dans le bundle seront ignorées.
 
-On edite la class AppBundle\Entity\VideoGame et on ajoute la relation avec Categorie et inversement
+On édite la class AppBundle\Entity\VideoGame et on ajoute la relation avec Category et inversement
 ```php
 //AppBundle\Entity/VideoGame
 
@@ -32,7 +32,7 @@ On edite la class AppBundle\Entity\VideoGame et on ajoute la relation avec Categ
 ```
 
 
-Il manque les getter et setters, on demande à doctrine de les faire pour nous. Je prefere car il rajoute les bons commentaires et surtout un return $this; sur les getters
+Il manque les getter et setters, on demande à doctrine de les faire pour nous. Je préfère car il rajoute les bons commentaires et surtout un return $this; sur les getters
 ```bash
 php bin/console doc:gen:entities AppBundle
 ```
@@ -47,7 +47,7 @@ php bin/console doctrine:schema:update --force
 
 
 
-Maintenant on va generer un crud et manipuler les forms et les relations.
+Maintenant on va générer un crud et manipuler les forms et les relations.
 ```bash
 php bin/console generate:doctrine:crud
 AppBundle:VideoGame
@@ -59,7 +59,7 @@ AppBundle:Category
 write action : yes
 ```
 
-on verifie que tout marche
+on vérifie que tout marche
 ```bash
 php bin/console server:run
 ```
@@ -70,7 +70,7 @@ On navigue à [http://127.0.0.1:8001/category/]
 On créé une catégorie
 
 On revient sur  à [http://127.0.0.1:8001/videogame/]  
-et edit le jeu créé.
+et édite le jeu créé.
 
 Erreur : pk ?
 
@@ -93,13 +93,13 @@ On corrige en ajoutant la fonction __toString à chaque entité.
     }
 ```
 
-On recharge ca marche mieux !  
+On recharge ça marche mieux !  
 On assigne la catégorie créée au VideoGame et on sauve.  
-L'information est bien sauvé en base. Le videoGame est lié à la catégorie.  
-On en profite pour créé un 2eme VideoGame sur [http://127.0.0.1:8001/videogame/new] et on n'assigne pas de catégory.
+L'information est bien sauvée en base. Le videoGame est lié à la catégorie.  
+On en profite pour créer un 2eme VideoGame sur [http://127.0.0.1:8001/videogame/new] et on n'assigne pas de catégory.
 
 
-On va vouloir ajouter les VideoGame directement dans le formulaire de la category. On edit CategoryType
+On va vouloir ajouter les VideoGame directement dans le formulaire de la category. On édite CategoryType
 ```php
 // src/AppBundle/Form/Type/CategoryType.php
 
@@ -126,8 +126,8 @@ error
 [Doctrine\ORM\Mapping\MappingException]
 OneToMany mapping on field 'videogames' requires the 'mappedBy' attribute.
 ```
-Parcequ'on a une relation OneToMany et ManyToOne, on doit definr les mappedBy et inversedBy.  
-Category ne possede pas physiquement d'information sur les VideoGame auxquels elle est rattachée. Le champ sql categorie_id se trouve dans la table de l'entité VideoGame. De ce fait on dit que VideoGame est le Owning Side de la relation. C'est lui qui possède l'information de la relation. En liant Categopy à VideoGame Doctrine a besoin de savoir où est le champ "maitre" de la relation et qui est l'inverse Side. C'est le but de ces paramètres.
+Parce qu’on a une relation OneToMany et ManyToOne, on doit définir les mappedBy et inversedBy.  
+Category ne possède pas physiquement d'information sur les VideoGame auxquels elle est rattachée. Le champ sql categorie_id se trouve dans la table de l'entité VideoGame. De ce fait on dit que VideoGame est le Owning Side de la relation. C'est lui qui possède l'information de la relation. En liant Category à VideoGame Doctrine a besoin de savoir où est le champ "maitre" de la relation et qui est l'inverse Side. C'est le but de ces paramètres.
 
 ```php
 // src/AppBundle/Entity/Category.php
@@ -151,17 +151,17 @@ Category ne possede pas physiquement d'information sur les VideoGame auxquels el
 php bin/console doctrine:generate:entities AppBundle
 ```
 
-On edit la category créé et on assigne le 2eme jeu
+On édite la category créé et on assigne le 2eme jeu
 [http://127.0.0.1:8001/category/1/edit]
 
 
 On sauve et la category est resté sur le premier jeu.  
 
 PK ?  
-On sauve une category. Elle n'est pas maitre de la relation. Elle ne la met donc pas à jour. Il faut sauver l'objet videogame pour que l'effet est lieu. C'est le OwningSide/InverSide effect.    
+On sauve une category. Elle n'est pas maître de la relation. Elle ne la met donc pas à jour. Il faut sauver l'objet videogame pour que l'effet ait lieu. C'est le OwningSide/InverSide effect.    
 
 Le maitre de la relation est toujours VideoGame hors, nous avons simplement remplis un ArrayCollection de l'objet Category et sauvé l'objet Category. VideoGame doit être sauvé aussi pour mettre à jour la relation vu que c'est le maitre de la relation. Comment faire ?  
-On corrige et on met à jour l'objet VideoGame lorsque'on change la liste dans l'entité Category
+On corrige et on met à jour l'objet VideoGame lorsqu’on change la liste dans l'entité Category
 ```php
 //AppBundle\Entity/Category
     public function addVideogame(\AppBundle\Entity\VideoGame $videogame)
@@ -186,7 +186,7 @@ On corrige et on met à jour l'objet VideoGame lorsque'on change la liste dans l
 
 On teste ! Tjs pas !  
 Pk ?  
-Le formulaire au moment où il lie la requete à l'objet Category utilise les getters et les setters. Hors dans le cas d'une relation OneToMany il n'y a pas de setter. Il faut donc modifier le formulaire pour ajouter une option.  
+Le formulaire au moment où il lie la requête à l'objet Category utilise les getters et les setters. Hors dans le cas d'une relation OneToMany il n'y a pas de setter. Il faut donc modifier le formulaire pour ajouter une option.  
  
 ```php
 //AppBundle\Form\CategoryType
@@ -199,13 +199,13 @@ Le formulaire au moment où il lie la requete à l'objet Category utilise les ge
         $builder->add('videogames', null, ['by_reference' => false]);
     }
 ```
-On reteste  
+On re-teste  
 Miracle, ca marche !  
 
-Bcp de changement pour finalement assigner des VideoGame depuis la category. Mais il faut comprendre que sans ce mecanisme. Doctrine pourrait partir en boucle infinie : Si les 2 cotés donnent l'ordre mettre à j'our l'objet lié.
+Bcp de changement pour finalement assigner des VideoGame depuis la category. Mais il faut comprendre que sans ce mécanisme. Doctrine pourrait partir en boucle infinie : Si les 2 cotés donnent l'ordre mettre à j'our l'objet lié.
 
 ### ManyToMany
-On va creer une entity Tag et on va creer une relation ManyToMany entre Tag et VideoGame 
+On va créer une entity Tag et on va créer une relation ManyToMany entre Tag et VideoGame 
  
  ```bash
 php bin/console doctrine:generate:entity  
@@ -266,13 +266,13 @@ Si on veut un bi directionnel, il faut reproduire le comportement vu plus tot en
 
 
 ### Cascade
-On a fait une erreur et on doit supprimer la categorie. On edit la Category et on delete.
+On a fait une erreur et on doit supprimer la category. On édite la Category et on delete.
 
 Erreur : PK ?
 
 
-On a créé une dependance entre 2 tables. Il existe donc une contrainte d'intégrité. Elle empeche qu'un category_id dans la table VideoGame n'existe plus dans la table Category.  
-Ce qui est le cas si on supprime la category. Les videoGame ont une relation obsolete. Par default c'est protégé. On va dire à doctrine de mettre à jour le champ dans la table VideoGame si on supprime la category et comme on a pas de valeur on la met à null.
+On a créé une dépendance entre 2 tables. Il existe donc une contrainte d'intégrité. Elle empêche qu'un category_id dans la table VideoGame n'existe plus dans la table Category.  
+Ce qui est le cas si on supprime la category. Les videoGame ont une relation obsolète. Par default c'est protégé. On va dire à doctrine de mettre à jour le champ dans la table VideoGame si on supprime la category, et comme on n’a pas de valeur, on la met à null.
 
 ```php
 // src/AppBundle/Entity/VideoGame.php
@@ -289,8 +289,8 @@ Ce qui est le cas si on supprime la category. Les videoGame ont une relation obs
 php bin/console doctrine:schema:update --force
 ```
 
-Si vous n'avez pas de VideoGame relié à un Category, recrez en une.
-Puis on va supprimer ce VideoGame directement. On s'attend à ce que la categorie soit supprimé aussi.
+Si vous n'avez pas de VideoGame relié à un Category, recréez en une.
+Puis on va supprimer ce VideoGame directement. On s'attend à ce que la category soit supprimé aussi.
 
 Elle ne l'est pas, pk ?
 
@@ -306,11 +306,11 @@ Il manque l'ordre à doctrine.
     private $category;
 ```
 
-Desormais si on supprime la VideoGame on supprime la categorie.
+Désormais si on supprime la VideoGame on supprime la category.
 
 
 
-Si on cree 2 VideoGame en rentrant 2 fois la même categorie, On créé 2 categories. Normal, on a rien empeché pour ca. On a même pas mis que name pouvait être unique.
+Si on cree 2 VideoGame en rentrant 2 fois la même category, On créé 2 categories. Normal, on a rien empêché pour ca. On a même pas mis que name pouvait être unique.
 On corrige
 ```php
 //AppBundle/Entity/Category
@@ -324,11 +324,12 @@ On corrige
 ```bash
 php bin/console doctrine:schema:update --force
 ```
-S'il pose des erreurs c'est surement que vous avez deja 2 categories avec le meme nom. Supprimez les et relancez la commande.
+S'il pose des erreurs c'est surement que vous avez déjà 2 categories avec le même nom. Supprimez-les et relancez la commande.
 
 Exo
-Relions 2 VideoGame à une meme categorie. Supprimons un jeu.
-rouver comment supprimer un jeu relié à 2 categorie sans supprimer la categorie mais si on supprimer le dernier jeu relié à cette categorie, cela supprime cette categorie.
+Relions 2 VideoGame à une même category. Supprimons un jeu.
+Trouver comment supprimer un jeu relié à 2 castegorie sans supprimer la category mais si on supprime le dernier jeu relié à cette category, cela supprime cette category.
+Reponse : orphanRemoval
 
 
 ### Cascade Persist et Embedded Form
@@ -360,7 +361,7 @@ use
 ```
 Et dans VideoGameType, ajoutons le formulaire de category directement.  
 Editons un des VideoGame  
-Rentrons une nouvelle categorie et on teste.  
+Rentrons une nouvelle category et on teste.  
 
 Erreur : PK ?  
 
@@ -375,6 +376,6 @@ Doctrine ne sait pas quoi faire de cet objet. on lui a donné aucune indication.
     private $category;   
 }
 ```
-On teste, ca marche, le VideoGame est relié à un nouvelle categorie
+On teste, ça marche, le VideoGame est relié à un nouvelle category
 
 

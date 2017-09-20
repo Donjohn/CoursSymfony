@@ -1,20 +1,20 @@
 Les Forms
 
 
-on va creer un entité Catégorie.
+on va créer une entité Catégorie.
 
 `php bin/console doctrine:generate:entity`  
 `AppBundle:Category`  
 `name`
 
-on va creer un entité Task.
+on va créer une entité Task.
 
 `php bin/console doctrine:generate:entity`  
 `AppBundle:Task`  
 `name`
 
 
-On edite la class Task et on ajoute la relation avec Categorie et inversement
+On édite la class Task et on ajoute la relation avec Categorie et inversement
 ```php
 //AppBundle\Entity/Task
     /**
@@ -32,7 +32,7 @@ On edite la class Task et on ajoute la relation avec Categorie et inversement
     private $tasks;
 ```
  
-Il manque les getter et setters, on demande à doctrine de les faire pour nous. Je prefere car il rajoute les bons commentaires et surtout un return $this; sur les getters  
+Il manque les getter et setters, on demande à doctrine de les faire pour nous. Je préfère car il rajoute les bons commentaires et surtout un return $this; sur les getters  
 `php bin/console doc:gen:entities AppBundle`
 
 On migre la database  
@@ -91,7 +91,7 @@ class TaskType extends AbstractType
 }
 ```
 
-On cree ensuite les controllers des Task et Category
+On crée ensuite les controllers des Task et Category
 ```php
 //AppBundle\Controller\TaskController;
 namespace AppBundle\Controller;
@@ -170,7 +170,7 @@ Et on créé 2 templates
 ```
 
 
-(EXO : Repetez pour Category)  
+(EXO : Répétez pour Category)  
 
 Si on va sur /category_new on se tape une erreur
 `Catchable Fatal Error: Object of class AppBundle\Entity\Task could not be converted to string`
@@ -197,8 +197,8 @@ On modifie la form de Category
     $builder->add('tasks');
 ```
 
-On va sur category_new et on essaie d'ajouter une nouvelle category en associant la tache créé à l'etape précédente
-Un tour dans la base de donnée nous indique que si la category est bien sauvée, la tache est toujours assignée à la premiere category créé
+On va sur category_new et on essaie d'ajouter une nouvelle category en associant la tache créé à l'étape précédente
+Un tour dans la base de donnée nous indique que si la category est bien sauvée, la tâche est toujours assignée à la première category créé
 
 EXO : PK ???
 (mapped/inversedBy...)  
@@ -214,13 +214,13 @@ public function addTask(Task $task){
 
 
 ***Embbed Forms***  
-On veut desormais creer la Category à la creation de la Task. On modifie le formulaire de Task pour ajouter celui de Category
+On veut désormais créer la Category à la création de la Task. On modifie le formulaire de Task pour ajouter celui de Category
 ```php
 $builder->add('category', CategoryType::class);
 ```
 
-Si on valide le formulaire sur task_new. On va avoir en létat un erreur. Doctrine nous dit qu'il a trouvé une nouvelle entité Category mais alors qu'on lui a dit de sauver Task
- (avec le persist), il ne sait pas quoi faire de celle là. Pour remedier à cela, on lui ajoute une indication à l'entité Task
+Si on valide le formulaire sur task_new. On va avoir en l’état une erreur. Doctrine nous dit qu'il a trouvé une nouvelle entité Category mais alors qu'on lui a dit de sauver Task
+ (avec le persist), il ne sait pas quoi faire de celle-là. Pour remédier à cela, on lui ajoute une indication à l'entité Task
  ```php
  //AppBundle\Entity/Task
      /**
@@ -234,3 +234,4 @@ Si on valide le formulaire sur task_new. On va avoir en létat un erreur. Doctri
 
 Exo : ajouter tasks à CategoryType
 CF doc Collection form embbded avec javascript.
+

@@ -2,7 +2,7 @@
 
  Une bundle est une librairie php dédiée à Symfony2/3.  
  Guzzle est une librairie php qu'on peut utiliser dans n'importe quel projet php comme du Laravel  
- symfony/assetic-bundle est quant à elle spécifique à Symfony, elle sont généralement nommés -bundle. Elle s'installe pourtant de la même manière.
+ symfony/assetic-bundle est quant à elle spécifique à Symfony, elles sont généralement nommés -bundle. Elle s'installe pourtant de la même manière.
  ```
 composer require symfony/assetic-bundle
     Using version ^2.8 for symfony/assetic-bundle
@@ -16,12 +16,12 @@ composer require symfony/assetic-bundle
     ...
 ```
  Si on observe ce que fait composer il télécharge en fait 2 librairies kriswallsmith/assetic en version 1.4 et symfony/assetic-bundle en 2.8 alors qu'on a demandé un seul package.
- Ce sont les dépendances du dit packages. Lui meme est capable d'indiquer à composer quelle sont ses propres dépendances. Dans le cas present la librairie kriswallsmith/assetic, utilisable dans n'importe quel projet php. Pour la rendre compatible et l'utiliser dans symfony de manière transparente, on utilise le bundle qui l'intègre pour nous.
- C'est un procédé très frequent.
+ Ce sont les dépendances du dit packages. Lui-même est capable d'indiquer à composer quelle sont ses propres dépendances. Dans le cas présent la librairie kriswallsmith/assetic, utilisable dans n'importe quel projet php. Pour la rendre compatible et l'utiliser dans symfony de manière transparente, on utilise le bundle qui l'intègre pour nous.
+ C'est un procédé très fréquent.
  
- Notre bundle n'est tjs pas utilisable dans Symfony. Il va falloir l'ajouter au moteur, le kernel.
+ Notre bundle n'est tjrs pas utilisable dans Symfony. Il va falloir l'ajouter au moteur, le kernel.
  Ouvrez le fichier app/AppKernel.php et ajoutez la ligne  `new Symfony\Bundle\AsseticBundle\AsseticBundle(),` à la liste des bundles utilisés.
-  Certains bundles ont besoin de configuration pour etre opérationnel. C'est le cas d'assetic, ouvrez le fichier app/config/config.yml et ajoutez
+  Certains bundles ont besoin de configuration pour être opérationnel. C'est le cas d'assetic, ouvrez le fichier app/config/config.yml et ajoutez
   ```yaml
 assetic:
     debug:          '%kernel.debug%'
@@ -35,19 +35,19 @@ Assetic est un gestionnaire de css et js. Tout comme gulp/webpack et d'autres. D
 Les bundles importants: 
 - https://symfony.com/doc/bundles/
 - FOSUserBundle  
-  Premet la gestion des utilisateurs stockés dans la base de données. Il offre tout ce qu'il faut pour identifier, authentifier, valider, attribuer des droits à des utilisateurs et stocke le tout dans la base de donnée. Ce qui n'est pas par default dans Symfony.
-  C'est un bundle essentiel, on l'utilise quasiement dans tous les projets. C'est assez rare de ne pas gérer de liste d'utilisateurs.
+  Permet la gestion des utilisateurs stockés dans la base de données. Il offre tout ce qu'il faut pour identifier, authentifier, valider, attribuer des droits à des utilisateurs et stocke le tout dans la base de donnée. Ce qui n'est pas par default dans Symfony.
+  C'est un bundle essentiel, on l'utilise quasiment dans tous les projets. C'est assez rare de ne pas gérer de liste d'utilisateurs.
 - SonataAdminBundle / EasyAdminBundle  
-  Je prefere EasyAdmin mais j'ai beaucoup utilisé SonataAdmin. Les commandes CrudGenerator permet de faire a minima le travail pour obtenir de quoi editer/lister/supprimer les entités. Mais Vous ne voulez pas refaire l'interface complete à chaque fois. Ces bundl offrent des moyens rapides (moins pour Sonata) d'avoir un backend rapide, reponsive, et qui offre toutes les options nescessaires. 
+  Je préfère EasyAdmin mais j'ai beaucoup utilisé SonataAdmin. Les commandes CrudGenerator permet de faire à minima le travail pour obtenir de quoi éditer/lister/supprimer les entités. Mais Vous ne voulez pas refaire l'interface complète à chaque fois. Ces bundles offrent des moyens rapides (moins pour Sonata) d'avoir un backend rapide, responsive, et qui offre toutes les options nécessaires. 
 - StofDoctrineExtensionsBundle  
   Permet d'automatiser des comportements sur les entités. Timestampable, Traduction, ...
 - LiipImagineBundle  
-  Permet de gérer les images en rajoutant des filtres. Tres important dans le cas ou vous devez afficher des images sur votre site. Vous ne voulez pas gérer les 10 formats nescessaires...
-- IvoryCKEditorBundle  	
-  Intégre le fameux CKEditor à Symfony
-  Remplace les Textarea par un editeur de texte complet.
+  Permet de gérer les images en rajoutant des filtres. Très important dans le cas où vous devez afficher des images sur votre site. Vous ne voulez pas gérer les 10 formats nécessaires...
+- IvoryCKEditorBundle      
+  Intègre le fameux CKEditor à Symfony
+  Remplace les Textarea par un éditeur de texte complet.
 - KnpMenuBundle  
-  Gestion de menus, permet de simplifier la creation, la navigation dans les menus que vous créez sur votre site.
+  Gestion de menus, permet de simplifier la création, la navigation dans les menus que vous créez sur votre site.
   
   
 FOSUSER en détail :
@@ -120,7 +120,7 @@ security:
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
 ````
-Identification != Authentification. Pourtant ca se gère au meme endroit car les 2 definissent un firewall.
+Identification != Authentification. Pourtant ça se gère au même endroit car les 2 définissent un firewall.
 Dance cet exemple, 'main' est notre firewall. On indique à SF d'activer ce firewall sur toutes les urls qui respectent la pattern ^/
 
 Identification :
@@ -155,9 +155,9 @@ Authentification :
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
 ```
-Des lors qu'il ya un firewall, il faut un User afin de connaitres ses droits.
-Vous pouvez accepter les Anonymous User comme dans l'exemple, son role est automatique et fournit par Symfony.
-Une personne non loggué peut donc acceder à l'url /login située derriere le firewall main car on a accepté les anonymous et que la page /login demande un des roles les plus bas de la hierarchie : IS_AUTHENTICATED_ANONYMOUSLY
+Des lors qu'il ya un firewall, il faut un User afin de connaitre ses droits.
+Vous pouvez accepter les Anonymous User comme dans l'exemple, son rôle est automatique et fournit par Symfony.
+Une personne non loggué peut donc acceder à l'url /login située derrière le firewall main car on a accepté les anonymous et que la page /login demande un des rôles les plus bas de la hierarchie : IS_AUTHENTICATED_ANONYMOUSLY
 
 Derniere étape, recuperer les routes fournies par FOSUser
 ```yaml
@@ -181,10 +181,11 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 ```
-Il fournit meme une page de profil de l'utilisateur !!
+Il fournit même une page de profil de l'utilisateur !!
 
 
 ### Surcharge
-1) heritage de bundle
+1) héritage de bundle
 2) juste les assets
 3) dans la config
+
