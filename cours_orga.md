@@ -1,5 +1,6 @@
 Comment organiser son code !
-  
+
+parler de la scruture des reps.
 
 Il existe plusieurs manières : 
 - AppBundle  
