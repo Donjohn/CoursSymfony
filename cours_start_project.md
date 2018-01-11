@@ -1,5 +1,5 @@
-Installer [https://symfony.com/doc/current/setup.html] 
-Installer [https://getcomposer.org/download/]
+Installer [https://symfony.com/doc/current/setup.html]   
+Installer [https://getcomposer.org/download/]  
 en fonction de votre OS.
 
 ```bash

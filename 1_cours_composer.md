@@ -1,7 +1,5 @@
 ** Composer **
- - créer un projet  
- Télécharger le script [https://symfony.com/doc/current/setup.html]    
- `php symfony new Cours`
+
  
  - on ouvre le fichier composer.json
  ```json
