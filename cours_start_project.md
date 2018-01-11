@@ -1,9 +1,21 @@
+Pk Symonfy ?
+Avant, chacun codait dans son coin. les sites à chaque evolution étaient majoritairement réécrit. Il y a bien eu des tentatives qui ont bien fontionné un temps comme le Zend Framework. Mais rien de vraiment solide et surtout formaté.
+L'idée est donc d'offrir un environnement de developpement structuré afin que les developpeurs PHP puissent developper ensemble plus facilement.  
+Avec l'idée de respecter les design patterns à tous les niveaux du traitement d'une requete HTTP, le moteur SF est capable de fonctionner avec la grande majorité des librairies PHP.  Ainsi la communauté a pu developper un ensemble de fonctionnalité recurrentes, configurables, et facilement intégrables.  
+
+CMS != framework.
+LE CMS est fait grace à un framework (drupal 7 : zend, drupal 8: une bonne partie de symfony, bolt: symfony)
+
+Cons : Le temps de developpement n'est pas adapté pour de sites tres simples ou des contenus tres similaires (un CMS est plus pertinent)
+Pros : la modularité. On peut faire ce qu'on veut, quasiement. Pas le café evidemment, on reste dans le traitement d'une requete HTTP (ouvrir app.php) 
+
+
 Installer [https://symfony.com/doc/current/setup.html] 
 Installer [https://getcomposer.org/download/]
 en fonction de votre OS.
 
 ```bash
-php symfony new DemoDuJour
+php symfony new DemoDuJour 3.4
 ```
 
 Quel IDE ? NetBeans ou PHPStorm (best)

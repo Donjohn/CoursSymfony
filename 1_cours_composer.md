@@ -1,7 +1,7 @@
 ** Composer **
  - créer un projet  
  Télécharger le script [https://symfony.com/doc/current/setup.html]    
- `php symfony new Cours`
+ `php symfony new Cours 3.4`
  
  - on ouvre le fichier composer.json
  ```json
@@ -36,7 +36,7 @@
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.3.*",
+        "symfony/symfony": "3.4.*",
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {

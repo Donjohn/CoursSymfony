@@ -110,7 +110,7 @@ security:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
-                csrf_provider: security.csrf.token_manager
+                csrf_token_generator: security.csrf.token_manager
             logout:       true
             anonymous:    true
 
@@ -121,7 +121,7 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
 ````
 Identification != Authentification. Pourtant ça se gère au même endroit car les 2 définissent un firewall.
-Dance cet exemple, 'main' est notre firewall. On indique à SF d'activer ce firewall sur toutes les urls qui respectent la pattern ^/
+Dans cet exemple, 'main' est notre firewall. On indique à SF d'activer ce firewall sur toutes les urls qui respectent la pattern ^/
 
 Identification :
 ```yaml
@@ -135,7 +135,7 @@ Identification :
         main:
             form_login:
                 provider: fos_userbundle
-                csrf_provider: security.csrf.token_manager
+                csrf_token_generator: security.csrf.token_manager
             logout:       true
             anonymous:    true
 ```
@@ -162,26 +162,10 @@ Une personne non loggué peut donc acceder à l'url /login située derrière le 
 Derniere étape, recuperer les routes fournies par FOSUser
 ```yaml
 # app/config/routing.yml
-fos_user_security:
-    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
-
-fos_user_profile:
-    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
-    prefix: /profile
-
-fos_user_register:
-    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /register
-
-fos_user_resetting:
-    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
-    prefix: /resetting
-
-fos_user_change_password:
-    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
-    prefix: /profile
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 ```
-Il fournit même une page de profil de l'utilisateur !!
+Ouvrons le, il fournit bcp de pages et même une page de profil de l'utilisateur !!
 
 
 ### Surcharge
