@@ -1,8 +1,8 @@
 Twig
 
-Language de templating developpé par Sensio. Tellement puissant que des sociétés se montent sur cette techno et revendent leur savoir faire.
-Comme tout language de templating, il existe les boucles, les if/else etc... des variables qui sont passés aux vues.
-Généralement vous utilisez Twig dans le rendu de vos controllers. Mais il s'utilise aussi très frequement lors de l'envoi de mail. Des mails complexes nescessitent parfois un templating adequate et on peut aussi utiliser Twig comment moteur de rendu de mail.
+Language de templating developpé par Sensio. Tellement puissant que des sociétés se montent sur cette techno et revendent leur savoir-faire.
+Comme tout language de templating, il existe les boucles, les if/else etc... ou des variables qui sont passés aux vues.
+Généralement vous utilisez Twig dans le rendu de vos controllers. Mais il s'utilise aussi très fréquemment lors de l'envoi de mail. Des mails complexes nécessitent parfois un templating adéquate et on peut aussi utiliser Twig comment moteur de rendu de mail.
 
 - Blocks  
 Dans twig on fonctionne à base de block.
@@ -12,7 +12,7 @@ Dans twig on fonctionne à base de block.
 AppBundle/Controller/DefaultController::indexAction  
 AppBundle/Resources/view/Default/index.twig.html
 ```
-le nom de l'action doit appeller une vue du même nom. Sinon vous allez vite vous perdre.
+le nom de l'action doit appeler une vue du même nom. Sinon vous allez vite vous perdre.
 
 - Extends / Include / Embbed  
 Je créé une action simple qui affiche Hello World !
@@ -53,7 +53,7 @@ Je créé une action simple qui affiche Hello World !
 ```
 
 
-Je cree une nouvelle action byeAction
+Je crée une nouvelle action byeAction
 ```php
     /**
      * @Route("/bye", name="bye")
@@ -75,8 +75,8 @@ et ma vue
 ```
 
 
-Si je veux changer World, je dois éditer 2 templates. Mauvaise solution ! Imaginez vous avez 200 vues !
-Je cree donc un template world.
+Si je veux changer World, je dois éditer 2 templates. Mauvaise solution ! Imaginez-vous avez 200 vues !
+Je crée donc un template world.
 ```twig
 {# Resource/views/default/world.html.twig #}
 
@@ -102,8 +102,8 @@ et je l'include dans mes 2 templates initiaux.
 {% endblock %}
 ```
 
-Une modification du client arrive et il veut desormais "Hello World !" et "Bye Planet !"
-Dans ce cas là on va embbed le template
+Une modification du client arrive et il veut désormais "Hello World !" et "Bye Planet !"
+Dans ce cas-là on va embbed le template
 ```twig
 {# Resource/views/default/bye.html.twig #}
 
@@ -143,12 +143,13 @@ Les templates index et bye deviennent :
 ```
 
 - Les filtres/Fonctions
-En plus de cette notion d'heritage et d'inclusion de template. Twig offres une plétore de fonctions manipulant les variables ou permettant de simplifier son code.
-Cela va du filtre qui tronque le texte, affiche les dates, interprete ou pas l'html...
+En plus de cette notion d'héritage et d'inclusion de template. Twig offres une pléthore de fonctions manipulant les variables ou permettant de simplifier son code.
+Cela va du filtre qui tronque le texte, affiche les dates, interprète ou pas l'html...
 https://twig.sensiolabs.org/doc/2.x/
 
 - Les Extensions
 Et si cela ne suffit pas, des extensions sont disponibles comme afficher les valeurs en toute lettres (1000 écrit mille), localiser les dates, ...
 
 
-More ? Vous pouvez coder vous meme vos fonctions et brique du twig. Et evidemment des dizaines de bundle rajoutent eux aussi leurs briques (obscurator Email par ex)
+More ? Vous pouvez coder vous même vos fonctions et brique du twig. Et évidemment des dizaines de bundle rajoutent eux aussi leurs briques (obscurator Email par ex)
+
