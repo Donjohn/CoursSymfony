@@ -2,34 +2,8 @@
 
  Une bundle est une librairie php dédiée à Symfony2/3.  
  Guzzle est une librairie php qu'on peut utiliser dans n'importe quel projet php comme du Laravel  
- symfony/assetic-bundle est quant à elle spécifique à Symfony, elles sont généralement nommés -bundle. Elle s'installe pourtant de la même manière.
- ```
-composer require symfony/assetic-bundle
-    Using version ^2.8 for symfony/assetic-bundle
-    ./composer.json has been updated
-    Package operations: 2 installs, 0 updates, 0 removals
-      - Installing kriswallsmith/assetic (v1.4.0) 
-      - Installing symfony/assetic-bundle (v2.8.1) 
-    ...
-    Writing lock file
-    Generating autoload files
-    ...
-```
- Si on observe ce que fait composer il télécharge en fait 2 librairies kriswallsmith/assetic en version 1.4 et symfony/assetic-bundle en 2.8 alors qu'on a demandé un seul package.
- Ce sont les dépendances du dit packages. Lui-même est capable d'indiquer à composer quelle sont ses propres dépendances. Dans le cas présent la librairie kriswallsmith/assetic, utilisable dans n'importe quel projet php. Pour la rendre compatible et l'utiliser dans symfony de manière transparente, on utilise le bundle qui l'intègre pour nous.
- C'est un procédé très fréquent.
  
- Notre bundle n'est tjrs pas utilisable dans Symfony. Il va falloir l'ajouter au moteur, le kernel.
- Ouvrez le fichier app/AppKernel.php et ajoutez la ligne  `new Symfony\Bundle\AsseticBundle\AsseticBundle(),` à la liste des bundles utilisés.
-  Certains bundles ont besoin de configuration pour être opérationnel. C'est le cas d'assetic, ouvrez le fichier app/config/config.yml et ajoutez
-  ```yaml
-assetic:
-    debug:          '%kernel.debug%'
-    use_controller: '%kernel.debug%'
-    filters:
-        cssrewrite: ~
-```
-Assetic est un gestionnaire de css et js. Tout comme gulp/webpack et d'autres. Depuis la 2.8 il a été retiré car il n'est pas indispensable. Néanmoins, historiquement il continue d'être très utilisé notamment pour changer les chemins des fichiers dans vos css lors de la mise en ligne de votre application. 
+jolicode/GifExceptionBundle
 
 
 Les bundles importants: 
