@@ -1,8 +1,9 @@
-<<<<<<< HEAD
 Installer [https://symfony.com/doc/current/setup.html]   
 Installer [https://getcomposer.org/download/]  
-=======
-Pk Symonfy ?
+======= 
+
+
+Pk Symonfy ?  
 Avant, chacun codait dans son coin. les sites à chaque evolution étaient majoritairement réécrit. Il y a bien eu des tentatives qui ont bien fontionné un temps comme le Zend Framework. Mais rien de vraiment solide et surtout formaté.
 L'idée est donc d'offrir un environnement de developpement structuré afin que les developpeurs PHP puissent developper ensemble plus facilement.  
 Avec l'idée de respecter les design patterns à tous les niveaux du traitement d'une requete HTTP, le moteur SF est capable de fonctionner avec la grande majorité des librairies PHP.  Ainsi la communauté a pu developper un ensemble de fonctionnalité recurrentes, configurables, et facilement intégrables.  
@@ -14,9 +15,8 @@ Cons : Le temps de developpement n'est pas adapté pour de sites tres simples ou
 Pros : la modularité. On peut faire ce qu'on veut, quasiement. Pas le café evidemment, on reste dans le traitement d'une requete HTTP (ouvrir app.php) 
 
 
-Installer [https://symfony.com/doc/current/setup.html] 
-Installer [https://getcomposer.org/download/]
->>>>>>> 86b8b7d5c1ec38d5ba1d50dcd075cdc50aa7d0d8
+Installer [https://symfony.com/doc/current/setup.html]  
+Installer [https://getcomposer.org/download/]  
 en fonction de votre OS.
 
 ```bash

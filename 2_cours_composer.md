@@ -1,11 +1,6 @@
 ** Composer **
-<<<<<<< HEAD:1_cours_composer.md
 
 =======
- - créer un projet  
- Télécharger le script [https://symfony.com/doc/current/setup.html]    
- `php symfony new Cours 3.4`
->>>>>>> 86b8b7d5c1ec38d5ba1d50dcd075cdc50aa7d0d8:cours_composer.md
  
  - on ouvre le fichier composer.json
  ```json
@@ -85,9 +80,9 @@
     `"symfony/swiftmailer-bundle": "^2.3.10",` indique que l'on veut le package symfony/swiftmailer-bundle (gestion des logs) AU MOINS en version 2.3.10. S'il existe une version 3, elle sera installée.  
     Pour savoir ce qui a réellement été installé, on regarde la sortie écran lors de l'exécution de composer ou bien on ouvre le fichier composer.lock et on cherche le package en question.
     
-    `"symfony/symfony": "3.3.*",` et plus précis. On demande la version 3.3.* uniquement. Si une version 3.4 ou 4.0 de Symfony sort, vous êtes assuré de ne pas upgrader le core de Symfony par erreur.
+    `"symfony/symfony": "3.4.*",` et plus précis. On demande la version 3.3.* uniquement. Si une version supperieur 3.4 (ex: 4.0) de Symfony sort, vous êtes assuré de ne pas upgrader le core de Symfony par erreur.
       
-      `"twig/twig": "^1.0||^2.0"` permet de sélectionner un ou l'autre version, incompatibles entre elles, en fonction de votre environnement.
+      `"twig/twig": "^1.0||^2.0"` permet de sélectionner un ou l'autre version, incompatibles entre elles, en fonction de votre environnement, d'autres librairies ou votre version php.
   
   
   
@@ -98,7 +93,7 @@
  {
     "config": {
         "platform": {
-            "php": "5.6.25"
+            "php": "7.1.3"
         }
     }
 }
@@ -113,9 +108,9 @@
         Cette commande met à jour le fichier composer.lock qui sert de reference pour installer les packages voulus.
     - install  
      Cette commande permet d'installer les librairies telles qu'elles ont été déclarées dans le fichier composer.lock (on y revient)    
-    - require  
+    - require <packageName> <version|optionnal>
     Permet d'ajouter une librairie à composer.json ou de spécifier une version
-    - remove
+    - remove <packageName>
     Permet de supprimer une librairie. (Ne prends pas de numéro de version)
     
     ex :On ne veut pas de Twig en 2 on veut revenir en Twig en version 1  
@@ -124,10 +119,11 @@
     On ouvre à nouveau le fichier composer.json et la ligne a changé 
     `"twig/twig": "^1.0"`
     
-     Il est souvent (voir toujours) nécessaire pour un développement de charger une librairie supplémentaire    
-     `composer require guzzlehttp/guzzle`  
-      Cela ajoute la librairie au fichier composer.json, vérifie les dépendances et procède à l'installation si tout va bien. Ici, On n'a pas précisé de version. On laisse composer trouver la dernière version compatible avec mon composer.json.
-      (Guzzle est une librairie php qui offre des clients de connexion)
+     Il est souvent (voir toujours) nécessaire pour un développement de charger une librairie supplémentaire
+     `composer require jolicode/gif-exception-bundle`    
+      Cela ajoute la librairie au fichier composer.json, vérifie les dépendances et procède à l'installation si tout va bien. Ici, On n'a pas précisé de version. On laisse composer trouver la dernière version compatible avec mon composer.json.      
+     
+     
 
  - flux de développement dans une équipe, les problèmes...
      - si tout le monde install les packages dans son coin. 
